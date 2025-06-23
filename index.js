@@ -27,6 +27,13 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('receive-return-signal', { signal });
   });
 
+  socket.on('chat-message', ({ message, from }) => {
+    const roomId = [...socket.rooms][1];
+    if (roomId) {
+      io.to(roomId).emit('chat-message', { message, from });
+    }
+  });
+
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
   });
